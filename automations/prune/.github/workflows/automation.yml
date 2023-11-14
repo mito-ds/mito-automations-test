@@ -1,0 +1,22 @@
+
+name: Automation: prune
+on:
+  - schedule:
+    - cron: 30 12 * * *
+  - workflow_dispatch
+  - pull_request:
+        branches:
+            - main
+    
+jobs:
+  run_automation:
+    name: Run prune
+    runs-on: ubuntu-latest      
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Run automation
+        run: python automations/prune/automation.py
