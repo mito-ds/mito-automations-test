@@ -1,0 +1,22 @@
+
+name: "Automation: AddColumntoNaN"
+on:
+  schedule:
+    - cron: 30 12 * * 2
+  workflow_dispatch: null
+  pull_request:
+    branches:
+        - main
+    
+jobs:
+  run_automation:
+    name: "Run AddColumntoNaN"
+    runs-on: ubuntu-latest      
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Run automation
+        run: python automations/AddColumntoNaN/automation.py
