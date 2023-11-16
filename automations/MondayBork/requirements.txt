@@ -1,0 +1,2 @@
+mitosheet==0.1.528
+pandas==2.1.3
