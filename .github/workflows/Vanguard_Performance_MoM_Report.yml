@@ -1,0 +1,34 @@
+
+name: "Automation: Vanguard Performance MoM Report"
+on:
+  schedule:
+    - cron: 0 13 * * 3
+  workflow_dispatch: null
+  pull_request:
+    branches:
+        - main
+    
+jobs:
+  run_automation:
+    name: "Run Vanguard Performance MoM Report"
+    runs-on: ubuntu-latest      
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Get the current timestamp
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H-%M-%S')"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r automations/Vanguard_Performance_MoM_Report/requirements.txt
+      - name: Run automation
+        run: python automations/Vanguard_Performance_MoM_Report/automation.py ${{ steps.date.outputs.date }}
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results-${{ steps.date.outputs.date }}
+          path: automations/Vanguard_Performance_MoM_Report/runs/${{ steps.date.outputs.date }}
